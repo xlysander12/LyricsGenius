@@ -398,7 +398,7 @@ class Genius(API, PublicAPI):
             result = await self.song(song_id)['song']
         else:
             search_term = "{s} {a}".format(s=title, a=artist).strip()
-            search_response = self.search_all(search_term)
+            search_response = await self.search_all(search_term)
             result = self._get_item_from_search_response(search_response,
                                                          title,
                                                          type_="song",
