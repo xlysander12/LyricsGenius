@@ -1,7 +1,7 @@
 class SearchMethods(object):
     """Search methods of the public API."""
 
-    def search(self, search_term, per_page=None, page=None, type_=''):
+    async def search(self, search_term, per_page=None, page=None, type_=''):
         """Searches Genius.
 
         Args:
@@ -42,7 +42,7 @@ class SearchMethods(object):
         params = {'q': search_term,
                   'per_page': per_page,
                   'page': page}
-        return self._make_request(path, params_=params, public_api=True)
+        return await self._make_request(path, params_=params, public_api=True)
 
     def search_albums(self, search_term, per_page=None, page=None):
         """Searches the albums on Genius.
@@ -184,7 +184,7 @@ class SearchMethods(object):
         endpoint = 'video'
         return self.search(search_term, per_page, page, endpoint)
 
-    def search_all(self, search_term, per_page=None, page=None):
+    async def search_all(self, search_term, per_page=None, page=None):
         """Searches all types.
 
         Including: albums, articles, lyrics, songs, users and
@@ -207,4 +207,4 @@ class SearchMethods(object):
 
         """
         endpoint = 'multi'
-        return self.search(search_term, per_page, page, endpoint)
+        return await self.search(search_term, per_page, page, endpoint)

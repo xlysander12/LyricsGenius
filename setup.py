@@ -55,7 +55,8 @@ setup(
     packages=find_packages(exclude=['tests']),
     install_requires=[
         'beautifulsoup4>=4.6.0',
-        'requests>=2.20.0'
+        'requests>=2.20.0',
+        'aiohttp>=3.7.4.post0'
     ],
     extras_require=extras_require,
     entry_points={

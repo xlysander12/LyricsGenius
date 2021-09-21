@@ -92,7 +92,7 @@ class Genius(API, PublicAPI):
             self.excluded_terms = self.default_terms.copy()
             self.excluded_terms.extend(excluded_terms)
 
-    def lyrics(self, song_id=None, song_url=None, remove_section_headers=False):
+    async def lyrics(self, song_id=None, song_url=None, remove_section_headers=False):
         """Uses BeautifulSoup to scrape song info off of a Genius song URL
 
         You must supply either `song_id` or song_url`.
@@ -129,7 +129,7 @@ class Genius(API, PublicAPI):
 
         # Scrape the song lyrics from the HTML
         html = BeautifulSoup(
-            self._make_request(path, web=True).replace('<br/>', '\n'),
+            await self._make_request(path, web=True).replace('<br/>', '\n'),
             "html.parser"
         )
 
@@ -355,7 +355,7 @@ class Genius(API, PublicAPI):
 
         return Album(self, album_info, tracks)
 
-    def search_song(self, title=None, artist="", song_id=None,
+    async def search_song(self, title=None, artist="", song_id=None,
                     get_full_info=True):
         """Searches for a specific song and gets its lyrics.
 
@@ -395,7 +395,7 @@ class Genius(API, PublicAPI):
                 print('Searching for "{s}"...'.format(s=title))
 
         if song_id:
-            result = self.song(song_id)['song']
+            result = await self.song(song_id)['song']
         else:
             search_term = "{s} {a}".format(s=title, a=artist).strip()
             search_response = self.search_all(search_term)
@@ -428,7 +428,7 @@ class Genius(API, PublicAPI):
         # Download full song info (an API call) unless told not to by user
         song_info = result
         if song_id is None and get_full_info is True:
-            new_info = self.song(song_id)['song']
+            new_info = await self.song(song_id)['song']
             song_info.update(new_info)
 
         if (song_info['lyrics_state'] == 'complete'

@@ -3,6 +3,7 @@ import os
 from json.decoder import JSONDecodeError
 
 import requests
+import aiohttp
 from requests.exceptions import HTTPError, Timeout
 
 
@@ -43,7 +44,7 @@ class Sender(object):
         self.sleep_time = sleep_time
         self.retries = retries
 
-    def _make_request(
+    async def _make_request(
         self,
         path,
         method='GET',
@@ -72,12 +73,16 @@ class Sender(object):
         while response is None and tries <= self.retries:
             tries += 1
             try:
-                response = self._session.request(method, uri,
-                                                 timeout=self.timeout,
-                                                 params=params_,
-                                                 headers=header,
-                                                 **kwargs)
-                response.raise_for_status()
+                # response = self._session.request(method, uri,
+                #                                  timeout=self.timeout,
+                #                                  params=params_,
+                #                                  headers=header,
+                #                                  **kwargs)
+                # response.raise_for_status()
+                async with aiohttp.ClientSession() as session:
+                    async with session.request(method, uri, timeout=self.timeout, params=params_, headers=header) as response:
+                        response.raise_for_status()
+
             except Timeout as e:
                 error = "Request timed out:\n{e}".format(e=e)
                 if tries > self.retries:

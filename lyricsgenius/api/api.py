@@ -413,7 +413,7 @@ class API(Sender):
                   'page': page}
         return self._make_request(endpoint, params_=params)
 
-    def song(self, song_id, text_format=None):
+    async def song(self, song_id, text_format=None):
         """Gets data for a specific song.
 
         Args:
@@ -434,7 +434,7 @@ class API(Sender):
         """
         endpoint = "songs/{id}".format(id=song_id)
         params = {'text_format': text_format or self.response_format}
-        return self._make_request(endpoint, params_=params)
+        return await self._make_request(endpoint, params_=params)
 
     def web_page(self, raw_annotatable_url=None, canonical_url=None, og_url=None):
         """Gets data for a specific web page.
