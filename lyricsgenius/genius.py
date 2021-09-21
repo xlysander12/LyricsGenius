@@ -128,10 +128,7 @@ class Genius(API, PublicAPI):
             path = self.song(song_id)['song']['path'][1:]
 
         # Scrape the song lyrics from the HTML
-        html = BeautifulSoup(
-            await self._make_request(path, web=True).replace('<br/>', '\n'),
-            "html.parser"
-        )
+        html = BeautifulSoup((await self._make_request(path, web=True)).replace('<br/>', '\n'),"html.parser")
 
         # Determine the class of the div
         div = html.find("div", class_=re.compile("^lyrics$|Lyrics__Root"))
@@ -433,7 +430,7 @@ class Genius(API, PublicAPI):
 
         if (song_info['lyrics_state'] == 'complete'
                 and not song_info.get('instrumental')):
-            lyrics = self.lyrics(song_url=song_info['url'])
+            lyrics = await self.lyrics(song_url=song_info['url'])
         else:
             lyrics = ""
 

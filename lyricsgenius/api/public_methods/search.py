@@ -1,7 +1,7 @@
 class SearchMethods(object):
     """Search methods of the public API."""
 
-    async def search(self, search_term, per_page=None, page=None, type_=''):
+    async def search(self, search_term, per_page=1, page=1, type_=''):
         """Searches Genius.
 
         Args:
@@ -44,7 +44,7 @@ class SearchMethods(object):
                   'page': page}
         return await self._make_request(path, params_=params, public_api=True)
 
-    def search_albums(self, search_term, per_page=None, page=None):
+    def search_albums(self, search_term, per_page=1, page=1):
         """Searches the albums on Genius.
 
         Alias for :meth:`search() <PublicAPI.search>`
@@ -184,7 +184,7 @@ class SearchMethods(object):
         endpoint = 'video'
         return self.search(search_term, per_page, page, endpoint)
 
-    async def search_all(self, search_term, per_page=None, page=None):
+    async def search_all(self, search_term, per_page=1, page=1):
         """Searches all types.
 
         Including: albums, articles, lyrics, songs, users and
